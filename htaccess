@@ -1,0 +1,16 @@
+# Включаем движок перезаписи
+RewriteEngine On
+
+# Разрешаем кросс-доменные запросы (на случай, если автопроверка идет с другого домена)
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods "GET, OPTIONS"
+Header set Access-Control-Allow-Headers "Content-Type"
+
+# Если запрашиваемый путь не является реальной папкой
+RewriteCond %{REQUEST_FILENAME} !-d
+# И не является реальным файлом
+RewriteCond %{REQUEST_FILENAME} !-f
+# Но если добавить к нему .php, и такой файл существует
+RewriteCond %{REQUEST_FILENAME}.php -f
+# То внутренне перенаправляем запрос на этот .php файл
+RewriteRule ^(.*)$ $1.php [L]
